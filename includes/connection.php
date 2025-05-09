@@ -1,12 +1,13 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "nwssu_lms_db";
+$host = getenv('DB_HOST');
+$port = getenv('DB_PORT') ?: 3306;
+$dbname = 'nwssu_lms_db';
+$user = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
 
-$conn = mysqli_connect($host, $user, $password, $database);
+$conn = new mysqli($host, $user, $password, $dbname, $port);
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
