@@ -1,0 +1,656 @@
+/*=======================================Global style===================================================*/
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #eeeeee;
+  font-family: "Roboto", sans-serif;
+  color: #151515;
+}
+
+ul,
+li,
+a {
+  text-decoration: none;
+  list-style: none;
+  border: none;
+  color: #151515;
+}
+
+/*=======================================Dashboard flex boxes===================================================*/
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  flex-direction: row;
+}
+
+.item:nth-child(1) {
+  width: 25%;
+  height: 100%;
+}
+
+.item:nth-child(2) {
+  flex-grow: 1;
+  height: 100%;
+}
+
+/*=======================================Sidebar style===================================================*/
+
+.sidebar {
+  margin: 1rem;
+  border-radius: 1rem;
+  width: 250px;
+  height: 100vh;
+  background-color: #1e1e2f;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-size: small;
+  margin-bottom: 40px;
+}
+
+.menu-section {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.side-links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  padding: 0 20px;
+  margin-top: 2rem;
+}
+
+.side-links a,
+.logout-section a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  transition: 0.3s, color 0.3s;
+  display: block;
+}
+
+.side-links a i {
+  margin-right: 10px;
+}
+
+.side-links a:hover {
+  background-color: #2f2f45;
+  color: #00a326;
+}
+
+.logout-section {
+  width: 100%;
+  padding: 0 20px 20px;
+  text-align: center;
+}
+
+.logout-section a:hover {
+  background-color: red;
+  box-shadow: 2px 0 10px rgba(255, 5, 5, 0.3);
+}
+
+/*=======================================Footer style===================================================*/
+
+footer {
+  color: #1e1e2f;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 18px;
+}
+
+footer a {
+  color: #00a326;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/*=======================================Main-content===================================================*/
+
+.main-content {
+  margin: 1rem;
+}
+
+.navigation-back {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/*=================Back button=====================*/
+
+.back-button {
+  background-color: #ffaa0094;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background-color: #ffaa00ee;
+}
+
+/*=================Profile=====================*/
+
+.profile-container {
+  width: 100%;
+  background-color: #e1e1e1b8;
+  padding: 3rem;
+  border-radius: 1rem;
+  margin: 1rem auto;
+}
+
+/*=================List=====================*/
+
+.list-container {
+  width: 100%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: sans-serif;
+}
+
+.list-section {
+  width: 100%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.top-list {
+  align-self: flex-end;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.search-input {
+  padding: 10px 15px;
+  width: 250px;
+  font-size: 0.95rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+/*=================Add borrower button=====================*/
+
+.add-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #218838;
+}
+
+/*=================Add borrower modal=====================*/
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* dark semi-transparent background */
+  display: none; /* shown with JS */
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px); /* this creates the blur */
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  font-family: sans-serif;
+  height: 80%;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.modal-form input,
+.modal-form select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+.book-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.book-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.add-more-books {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-actions button#closeModal {
+  background-color: #ccc;
+}
+
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: opacity 0.5s ease;
+}
+
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+.list-item {
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+
+.list-item:hover {
+  background-color: #00a32674;
+}
+
+.list-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.details {
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+}
+
+.icon:hover {
+  background-color: #bbb;
+}
+
+/* Delete icon (X) */
+.icon.delete::before,
+.icon.delete::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  width: 2px;
+  height: 14px;
+  background-color: #c00;
+}
+
+.icon.delete::before {
+  transform: rotate(45deg);
+}
+
+.icon.delete::after {
+  transform: rotate(-45deg);
+}
+
+/* Message icon (speech bubble) */
+.icon.message::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 18px;
+  height: 14px;
+  background-color: #007bff;
+  border-radius: 4px 4px 4px 0;
+}
+
+.icon.message::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-top-color: #007bff;
+  border-bottom: 0;
+  margin-left: -2px;
+}
+
+/* Email icon (envelope) */
+.icon.email::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  width: 18px;
+  height: 12px;
+  background-color: #28a745;
+  clip-path: polygon(0 0, 100% 0, 50% 50%, 0 0, 0 100%, 100% 100%, 100% 0);
+}
+
+
+/*=================Add book modal=====================*/
+
+
+.add-book-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.add-book-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  font-family: sans-serif;
+}
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.add-book-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.add-book-form input:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+
+/*=================Borrower profile=====================*/
+
+.borrower-details {
+  background-color: #00a32674;
+  border-radius: 12px;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
+}
+
+.borrower-info {
+  margin-bottom: 1.5rem;
+}
+
+.borrower-info .name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.borrower-info .meta {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #ffffff;
+  display: flex;
+  gap: 2rem;
+}
+
+.borrowed-books {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/*=================Book details=====================*/
+
+.book-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.title-indicator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.book-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.book-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.delete-book-button {
+  background: none;
+  border: none;
+  color: #ff00159f;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.delete-book-button:hover {
+  color: #ff0019;
+}
+
+.book-overdue {
+  color: red;
+}
+
+.book-meta {
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.date-borrowed {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.date-borrowed span:not(:first-child) {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.date-borrowed span:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  width: 1px;
+  background-color: #ccc;
+}
+
+.borrowed-details-action {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.add-book-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-book-button:hover {
+  background-color: #00ff0dd8;
+}
+
+.delete-borrower-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background-color: #ff000090;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.delete-borrower-button:hover {
+  background-color: #ff0000df;
+}
