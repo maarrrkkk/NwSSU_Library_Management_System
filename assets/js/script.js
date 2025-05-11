@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      const allModals = document.querySelectorAll(".modal-overlay, .add-book-overlay");
+      const allModals = document.querySelectorAll(
+        ".modal-overlay, .add-book-overlay"
+      );
       allModals.forEach((modal) => {
         modal.style.display = "none";
       });
@@ -69,114 +71,116 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Borrower Form Submission
-  document.getElementById('borrowerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+  document
+    .getElementById("borrowerForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    const form = e.target;
-    const formData = new FormData(form);
+      const form = e.target;
+      const formData = new FormData(form);
 
-    fetch('includes/process-add-borrower.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(response => {
-      if (response.status === "success") {
-        form.reset();
-        showToast('✅ Borrower added successfully!');
-      } else if (response.status === "exists") {
-        showToast('⚠️ Borrower already exists.');
-      } else {
-        showToast('❌ Error adding borrower.');
-        console.error(response.message);
-      }
-    })
-    .catch(error => {
-      showToast('❌ Server error.');
-      console.error('Error:', error);
+      fetch("includes/process-add-borrower.php", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          if (response.status === "success") {
+            form.reset();
+            showToast("✅ Borrower added successfully!");
+          } else if (response.status === "exists") {
+            showToast("⚠️ Borrower already exists.");
+          } else {
+            showToast("❌ Error adding borrower.");
+            console.error(response.message);
+          }
+        })
+        .catch((error) => {
+          showToast("❌ Server error.");
+          console.error("Error:", error);
+        });
     });
-  });
 
   // Book Form Submission
-  const addBookForm = document.getElementById('addBookForm');
+  const addBookForm = document.getElementById("addBookForm");
 
   if (addBookForm) {
-    addBookForm.addEventListener('submit', function (e) {
+    addBookForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const formData = new FormData(addBookForm);
-      const borrowerId = new URLSearchParams(window.location.search).get('id');
+      const borrowerId = new URLSearchParams(window.location.search).get("id");
       if (borrowerId) {
-        formData.set('borrower_id', borrowerId);
+        formData.set("borrower_id", borrowerId);
       }
 
-      fetch('includes/process-add-book.php', {
-        method: 'POST',
-        body: formData
+      fetch("includes/process-add-book.php", {
+        method: "POST",
+        body: formData,
       })
-        .then(res => res.text())
-        .then(response => {
-          if (response.includes('✅')) {
-            showToast('✅ Book added successfully!');
+        .then((res) => res.text())
+        .then((response) => {
+          if (response.includes("✅")) {
+            showToast("✅ Book added successfully!");
             addBookForm.reset();
             closeModalHandler(addBookModalOverlay);
             setTimeout(() => {
               location.reload();
             }, 1000);
-          } else if (response.includes('❌')) {
+          } else if (response.includes("❌")) {
             showToast(response); // Show the custom message from PHP
           } else {
-            showToast('❌ Error adding book.');
+            showToast("❌ Error adding book.");
             console.error(response);
           }
         })
-        .catch(error => {
-          showToast('❌ Server error.');
-          console.error('Error:', error);
+        .catch((error) => {
+          showToast("❌ Server error.");
+          console.error("Error:", error);
         });
     });
   }
 
   // Toast Message
   function showToast(message) {
-    const toast = document.getElementById('toast');
+    const toast = document.getElementById("toast");
     if (!toast) return;
-  
+
     toast.textContent = message;
-    toast.classList.remove('hidden');
-  
+    toast.classList.remove("hidden");
+
     setTimeout(() => {
-      toast.classList.add('hidden');
+      toast.classList.add("hidden");
     }, 4000);
   }
 
   // DELETE Borrower
-  window.deleteBorrower = function(event, name) {
+  window.deleteBorrower = function (event, name) {
     event.preventDefault();
-  
+
     if (confirm("Are you sure you want to delete this borrower?")) {
-      fetch('includes/delete_borrower.php', {
-        method: 'POST',
+      fetch("includes/delete_borrower.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: 'id=' + encodeURIComponent(name)
+        body: "id=" + encodeURIComponent(name),
       })
-      .then(response => response.text())
-      .then(result => {
-        if (result === 'success') {
-          const listItem = event.target.closest('.list-item');
-          listItem.remove();
-          showToast('✅ Borrower deleted successfully!');
-        } else {
-          showToast('❌ Failed to delete borrower.');
-          console.error(result);
-        }
-      })
-      .catch(error => {
-        showToast('❌ An error occurred while deleting.');
-        console.error(error);
-      });
+        .then((response) => response.text())
+        .then((result) => {
+          if (result === "success") {
+            const listItem = event.target.closest(".list-item");
+            listItem.remove();
+            showToast("✅ Borrower deleted successfully!");
+          } else {
+            showToast("❌ Failed to delete borrower.");
+            console.error(result);
+          }
+        })
+        .catch((error) => {
+          showToast("❌ An error occurred while deleting.");
+          console.error(error);
+        });
     }
   };
 
@@ -191,13 +195,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const searchTerm = searchInput.value.toLowerCase();
 
       borrowerItems.forEach(function (item) {
-        const name = item.querySelector(".name")?.textContent.toLowerCase() || "";
-        const studentId = item.querySelector(".student-id")?.textContent.toLowerCase() || "";
-        const status = item.querySelector(".student-indicator")?.textContent.toLowerCase() || "";
+        const name =
+          item.querySelector(".name")?.textContent.toLowerCase() || "";
+        const studentId =
+          item.querySelector(".student-id")?.textContent.toLowerCase() || "";
+        const status =
+          item.querySelector(".student-indicator")?.textContent.toLowerCase() ||
+          "";
 
-        const matches = name.includes(searchTerm) ||
-                        studentId.includes(searchTerm) ||
-                        status.includes(searchTerm);
+        const matches =
+          name.includes(searchTerm) ||
+          studentId.includes(searchTerm) ||
+          status.includes(searchTerm);
 
         item.style.display = matches ? "block" : "none";
       });

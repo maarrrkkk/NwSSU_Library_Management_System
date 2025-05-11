@@ -452,6 +452,58 @@ footer a:hover {
   margin: 1rem auto;
 }
 
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-container {
+  position: relative;
+}
+
+.bell-icon {
+  font-size: 1.5rem;
+  color: #fd8c00;
+  cursor: pointer;
+}
+
+.notification-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 300px;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.notification-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.notification-dropdown li {
+  padding: 0.3rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-dot {
+    position: absolute;
+    top: -4px;
+    right: 18px;
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+}
+
 /*=================List=====================*/
 
 .list-item.overdue {
