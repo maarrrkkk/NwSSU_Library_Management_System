@@ -9,14 +9,16 @@ require_once 'components/header.php';
         ?>
         <div class="list-section">
             <div class="top-list">
-                <input type="text" class="search-input" placeholder="Search borrower...">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" id="borrowerSearch" placeholder="Search borrower...">                </div>                
                 <button class="add-button" id="openModal">+ Add Borrower</button>
                 <?php
                 require_once 'components/add-borrower-modal.php'; 
                 ?>
             </div>
 
-            <div class="list-container">
+            <div class="list-container" id="borrowerList">
                 
             <!-- fetching data from the borrower table -->
              
@@ -27,28 +29,40 @@ require_once 'components/header.php';
             $result = $conn->query($query); // Change to $pdo->query(...) if you're using PDO
 
             while ($row = $result->fetch_assoc()) {
+                $borrowerId = $row['id'];
+                $borrowerName = $conn->real_escape_string($row['name']);
                 $status = ucfirst($row['status']);
                 $studentId = $row['student_id'] ?: 'N/A';
                 $bookCount = $row['number_of_books'] . ' book' . ($row['number_of_books'] != 1 ? 's' : '');
-            
+
+                // Check for overdue books
+                $today = date('Y-m-d');
+                $overdueQuery = "SELECT COUNT(*) as overdue_count FROM borrowed_books 
+                                WHERE borrowed_name = '{$borrowerName}' AND return_date < '{$today}'";
+                $overdueResult = $conn->query($overdueQuery);
+                $overdueData = $overdueResult->fetch_assoc();
+                $isOverdue = $overdueData['overdue_count'] > 0;
+
+                $overdueClass = $isOverdue ? 'overdue' : '';
+
                 echo "
-                <a href='borrower.php?id={$row['id']}' class='list-link'>
-                <div class='list-item' data-id='{$row['id']}'>
-                    <div class='list-info'>
-                        <div class='name'>{$row['name']}</div>
-                        <div class='details'>
-                            <span class='student-indicator'><b>{$status}</b></span>
-                            <span class='student-id'>{$studentId}</span>
-                            <span class='book-count'>{$bookCount}</span>
+                <a href='borrower.php?id={$borrowerId}' class='list-link'>
+                    <div class='list-item {$overdueClass}' data-id='{$borrowerId}'>
+                        <div class='list-info'>
+                            <div class='name'>{$row['name']}</div>
+                            <div class='details'>
+                                <span class='student-indicator'><b>{$status}</b></span>
+                                <span class='student-id'>{$studentId}</span>
+                                <span class='book-count'>{$bookCount}</span>
+                            </div>
+                        </div>
+                        <div class='actions'>
+                            <button class='icon delete' title='Delete' onclick='deleteBorrower(event, {$borrowerId})'></button>
+                            <button class='icon message' title='Message'></button>
+                            <button class='icon email' title='Email'></button>
                         </div>
                     </div>
-                    <div class='actions'>
-                        <button class='icon delete' title='Delete' onclick='deleteBorrower(event, {$row['id']})'></button>
-                        <button class='icon message' title='Message'></button>
-                        <button class='icon email' title='Email'></button>
-                    </div>
-                </div>
-            </a>";
+                </a>";
             }
             ?>
 

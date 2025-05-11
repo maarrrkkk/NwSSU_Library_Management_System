@@ -76,22 +76,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(form);
 
     fetch('includes/process-add-borrower.php', {
-        method: 'POST',
-        body: formData
+      method: 'POST',
+      body: formData
     })
-    .then(res => res.text())
+    .then(res => res.json())
     .then(response => {
-        if (response.includes('✅ Borrower added successfully')) {
-            form.reset();
-            showToast('✅ Borrower added successfully!');
-        } else {
-            showToast('❌ Error adding borrower.');
-            console.error(response);
-        }
+      if (response.status === "success") {
+        form.reset();
+        showToast('✅ Borrower added successfully!');
+      } else if (response.status === "exists") {
+        showToast('⚠️ Borrower already exists.');
+      } else {
+        showToast('❌ Error adding borrower.');
+        console.error(response.message);
+      }
     })
     .catch(error => {
-        showToast('❌ Server error.');
-        console.error('Error:', error);
+      showToast('❌ Server error.');
+      console.error('Error:', error);
     });
   });
 
@@ -119,8 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
             addBookForm.reset();
             closeModalHandler(addBookModalOverlay);
             setTimeout(() => {
-              location.reload(); // Reload to reflect the new book
+              location.reload();
             }, 1000);
+          } else if (response.includes('❌')) {
+            showToast(response); // Show the custom message from PHP
           } else {
             showToast('❌ Error adding book.');
             console.error(response);
@@ -175,4 +179,28 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   };
+
+  // 🔍 Search Borrowers (Client-Side Filter)
+  const searchInput = document.getElementById("borrowerSearch");
+  const borrowerList = document.getElementById("borrowerList");
+
+  if (searchInput && borrowerList) {
+    const borrowerItems = borrowerList.querySelectorAll(".list-link");
+
+    searchInput.addEventListener("input", function () {
+      const searchTerm = searchInput.value.toLowerCase();
+
+      borrowerItems.forEach(function (item) {
+        const name = item.querySelector(".name")?.textContent.toLowerCase() || "";
+        const studentId = item.querySelector(".student-id")?.textContent.toLowerCase() || "";
+        const status = item.querySelector(".student-indicator")?.textContent.toLowerCase() || "";
+
+        const matches = name.includes(searchTerm) ||
+                        studentId.includes(searchTerm) ||
+                        status.includes(searchTerm);
+
+        item.style.display = matches ? "block" : "none";
+      });
+    });
+  }
 });

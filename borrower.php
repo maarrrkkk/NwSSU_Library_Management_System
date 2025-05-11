@@ -74,26 +74,38 @@ require_once 'components/header.php';
                 $book_id = $_POST['book_id'];
                 $borrow_date = $_POST['borrow_date'];
                 $return_date = $_POST['return_date'];
-        
-                // Fetch borrower's name
-                $stmtName = $conn->prepare("SELECT name FROM borrowers WHERE id = ?");
-                $stmtName->bind_param("i", $borrower_id);
-                $stmtName->execute();
-                $borrowerData = $stmtName->get_result()->fetch_assoc();
-                $borrowed_name = $borrowerData['name'];
-        
-                // Insert book
-                $insertStmt = $conn->prepare("INSERT INTO borrowed_books (borrower_id, borrowed_name, book_id, book_title, borrow_date, return_date) VALUES (?, ?, ?, ?, ?, ?)");
-                $insertStmt->bind_param("isssss", $borrower_id, $borrowed_name, $book_id, $book_title, $borrow_date, $return_date);
-                $insertStmt->execute();
-        
-                // Increment number_of_books
-                $updateStmt = $conn->prepare("UPDATE borrowers SET number_of_books = number_of_books + 1 WHERE id = ?");
-                $updateStmt->bind_param("i", $borrower_id);
-                $updateStmt->execute();
-        
-                header("Location: borrower.php?id=" . $borrower_id);
-                exit;
+
+                // Check if the book already exists in borrowed_books
+                $checkStmt = $conn->prepare("SELECT id FROM borrowed_books WHERE book_id = ?");
+                $checkStmt->bind_param("s", $book_id);
+                $checkStmt->execute();
+                $checkResult = $checkStmt->get_result();
+
+                if ($checkResult->num_rows > 0) {
+                    // Display the message in the page
+                    $error_message = "The book is already borrowed";
+                } else {
+                    // Proceed with adding the book
+                    // Fetch borrower's name
+                    $stmtName = $conn->prepare("SELECT name FROM borrowers WHERE id = ?");
+                    $stmtName->bind_param("i", $borrower_id);
+                    $stmtName->execute();
+                    $borrowerData = $stmtName->get_result()->fetch_assoc();
+                    $borrowed_name = $borrowerData['name'];
+
+                    // Insert book
+                    $insertStmt = $conn->prepare("INSERT INTO borrowed_books (borrower_id, borrowed_name, book_id, book_title, borrow_date, return_date) VALUES (?, ?, ?, ?, ?, ?)");
+                    $insertStmt->bind_param("isssss", $borrower_id, $borrowed_name, $book_id, $book_title, $borrow_date, $return_date);
+                    $insertStmt->execute();
+
+                    // Increment number_of_books
+                    $updateStmt = $conn->prepare("UPDATE borrowers SET number_of_books = number_of_books + 1 WHERE id = ?");
+                    $updateStmt->bind_param("i", $borrower_id);
+                    $updateStmt->execute();
+
+                    header("Location: borrower.php?id=" . $borrower_id);
+                    exit;
+                }
             }
         }
         
@@ -118,14 +130,40 @@ require_once 'components/header.php';
         }
         ?>
 
+        <?php if (isset($error_message)): ?>
+            <div id="errorMessage" class="error-message" style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-top: 1rem;">
+                <?php echo htmlspecialchars($error_message); ?>
+            </div>
+
+            <script>
+                setTimeout(function() {
+                    const errorBox = document.getElementById('errorMessage');
+                    if (errorBox) {
+                        errorBox.style.display = 'none';
+                    }
+                }, 5000); // 5000ms = 5 seconds
+            </script>
+        <?php endif; ?>
+
+
         <div class="borrower-details">
             <div class="borrower-info">
                 <div class="name"><?= htmlspecialchars($borrower['name']) ?></div>
                 <div class="meta">
                     <span>Age: <?= $borrower['age'] ?></span>
-                    <span>Student ID: <?= htmlspecialchars($borrower['student_id']) ?></span>
+                    <span>
+                        Student ID: 
+                        <?= !empty($borrower['student_id']) ? htmlspecialchars($borrower['student_id']) : 'N/A' ?>
+                    </span>
+                    <span>
+                        Status: 
+                        <?= (!empty($borrower['student_id']) && strtolower($borrower['status']) === 'student') 
+                            ? 'Student' 
+                            : 'Non-student' ?>
+                    </span>
                 </div>
             </div>
+
 
             <div class="borrowed-books">
                 <?php while ($book = $books->fetch_assoc()): ?>
