@@ -20,13 +20,19 @@ while ($book = $borrowedBooksResult->fetch_assoc()) {
     <div class="table-list">
         <div class="lists-of-borrower" id="borrowerList">
             <div class="title-searc-box">
-                <h2>Borrower List</h2>
+                <div class="logo-title-container">
+                    <img src="assets/images/logo.png" alt="Logo" style="height: auto; width: 3rem;">
+                    <h2>NwSSU LMS</h2>
+                </div>
                 <input type="text" id="searchBox" placeholder="Search borrower..." onkeyup="filterBorrowers()" />
             </div>
             <ul id="borrowerUl">
-                <?php while ($borrower = $borrowersResult->fetch_assoc()): ?>
+                <h2 style="margin-bottom: 1rem;">Borrower List</h2>
+                <?php
+                $counter = 1;
+                while ($borrower = $borrowersResult->fetch_assoc()): ?>
                     <li onclick='showDetails(<?= json_encode($borrower) ?>, <?= json_encode($borrowedBooksByBorrower[$borrower["id"]] ?? []) ?>)'>
-                        <?= htmlspecialchars($borrower['name']) ?>
+                        <?= $counter++ . ". " . htmlspecialchars($borrower['name']) ?>
                     </li>
                 <?php endwhile; ?>
             </ul>

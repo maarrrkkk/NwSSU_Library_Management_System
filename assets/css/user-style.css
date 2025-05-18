@@ -14,6 +14,10 @@ body {
   color: #151515;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 ul,
 li,
 a {
@@ -74,10 +78,16 @@ a {
   transition: all 0.3s ease;
 }
 
+.logo-title-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
 #searchBox {
     width: 100%;
     padding: 8px 12px;
-    margin: 10px 0 20px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
@@ -132,7 +142,7 @@ a {
 
 .borrower-details {
   flex: 3 1 0;
-  width: 0;
+  width: 50rem;
   overflow: hidden;
   background-color: #f1f1f1;
   border-radius: 10px;
@@ -243,6 +253,7 @@ a {
   }
 
   .borrower-details.visible {
+    height: 100%;
     max-width: 100%;
     transform: translateX(0);
     opacity: 1;
@@ -256,14 +267,23 @@ a {
 
 }
 
+  .lists-of-borrower.shrink {
+    flex: 1 1 100%;
+  }
+}
+
   @media (max-width: 599px) {
 
     .home-section {
        padding: 35px 0px 0px 0px !important;
     }
-  }
 
-  .lists-of-borrower.shrink {
-    flex: 1 1 100%;
+    .title-searc-box {
+      flex-direction: column !important;
+      margin: 4rem 0rem 4rem 0rem;
+      gap: 3rem;
+    }
+
+
+
   }
-}
