@@ -1,32 +1,32 @@
 <?php
-require_once 'components/header.php'; 
+session_start();
+
+if (!isset($_SESSION['position']) || $_SESSION['position'] !== 'admin') {
+    header('Location: ../login.php');
+    exit;
+}
+
+include 'components/header.php';
+require '../includes/connection.php';
 ?>
 
 <div class="item">
     <div class="main-content">
-        <?php
-        require_once 'components/profile.php'; 
-        ?>
+        <?php require_once 'components/profile.php'; ?>
         <div class="list-section">
             <div class="top-list">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" class="search-input" id="borrowerSearch" placeholder="Search borrower...">                </div>                
+                    <input type="text" class="search-input" id="borrowerSearch" placeholder="Search borrower...">                
+                </div>                
                 <button class="add-button" id="openModal">+ Add Borrower</button>
-                <?php
-                require_once 'components/add-borrower-modal.php'; 
-                ?>
+                <?php require_once 'components/add-borrower-modal.php'; ?>
             </div>
 
             <div class="list-container" id="borrowerList">
-                
-            <!-- fetching data from the borrower table -->
-             
             <?php
-            include './includes/connection.php'; // This file should set up your $conn or $pdo connection
-
             $query = "SELECT * FROM borrowers";
-            $result = $conn->query($query); // Change to $pdo->query(...) if you're using PDO
+            $result = $conn->query($query);
 
             while ($row = $result->fetch_assoc()) {
                 $borrowerId = $row['id'];
@@ -35,7 +35,6 @@ require_once 'components/header.php';
                 $studentId = $row['student_id'] ?: 'N/A';
                 $bookCount = $row['number_of_books'] . ' book' . ($row['number_of_books'] != 1 ? 's' : '');
 
-                // Check for overdue books
                 $today = date('Y-m-d');
                 $overdueQuery = "SELECT COUNT(*) as overdue_count FROM borrowed_books 
                                 WHERE borrowed_name = '{$borrowerName}' AND return_date < '{$today}'";
@@ -57,24 +56,16 @@ require_once 'components/header.php';
                             </div>
                         </div>
                         <div class='actions'>
-                            <button class='icon delete' title='Delete' onclick='deleteBorrower(event, {$borrowerId})'></button>
-                            <button class='icon message' title='Message'></button>
-                            <button class='icon email' title='Email'></button>
+                            <button class='icon delete' title='Delete' onclick='event.stopPropagation(); deleteBorrower(event, {$borrowerId})'></button>
+                           
                         </div>
                     </div>
                 </a>";
-            }
+                }
             ?>
-
-
             </div>
         </div>
     </div>
 
-    <!-- No div end for the class item here its inside the footer -->
 
-    
-
-<?php
-require_once 'components/footer.php'; 
-?>
+<?php require_once 'components/footer.php'; ?>

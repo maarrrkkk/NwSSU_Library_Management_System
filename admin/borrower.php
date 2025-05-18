@@ -8,12 +8,12 @@ require_once 'components/header.php';
         <?php require_once 'components/profile.php'; ?>
 
         <div class="navigation-back">
-            <a href="index.php" class="back-button">← Back</a>
+            <a href="dashboard.php" class="back-button">← Back</a>
             <h1>Borrower</h1>
         </div>
 
         <?php
-        include './includes/connection.php';
+        include './../includes/connection.php';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -32,7 +32,7 @@ require_once 'components/header.php';
                 $stmtDeleteBorrower->execute();
 
                 // Redirect to borrower list or main page after deletion
-                header("Location: index.php");
+                header("Location: dashboard.php");
                 exit;
             }
 
@@ -150,16 +150,24 @@ require_once 'components/header.php';
             <div class="borrower-info">
                 <div class="name"><?= htmlspecialchars($borrower['name']) ?></div>
                 <div class="meta">
-                    <span>Age: <?= $borrower['age'] ?></span>
+                    <span><strong>Age:</strong> <?= $borrower['age'] ?></span>
                     <span>
-                        Student ID: 
+                        <strong>Student ID:</strong>
                         <?= !empty($borrower['student_id']) ? htmlspecialchars($borrower['student_id']) : 'N/A' ?>
                     </span>
                     <span>
-                        Status: 
+                        <strong>Status:</strong>
                         <?= (!empty($borrower['student_id']) && strtolower($borrower['status']) === 'student') 
                             ? 'Student' 
                             : 'Non-student' ?>
+                    </span>
+                    <span>
+                        <strong>Phone:</strong>
+                        <?= !empty($borrower['phone']) ? htmlspecialchars($borrower['phone']) : 'N/A' ?>
+                    </span>
+                    <span>
+                        <strong>Email:</strong>
+                        <?= !empty($borrower['email']) ? htmlspecialchars($borrower['email']) : 'N/A' ?>
                     </span>
                 </div>
             </div>

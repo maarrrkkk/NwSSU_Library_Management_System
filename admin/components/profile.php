@@ -1,11 +1,16 @@
 <?php
-include './includes/connection.php';
-include './includes/get_notifications.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$adminFirstName = isset($_SESSION['first_name']) ? htmlspecialchars($_SESSION['first_name']) : 'Admin';
+
+include './../includes/connection.php';
+include './../includes/get_notifications.php';
 ?>
 
 <div class="profile-container">
     <div class="profile-header">
-        <h2><span style="font-weight: 100;">Hello</span> Emely Taduyo!</h2>
+        <h2><span style="font-weight: 100;">Hello</span> <?= $adminFirstName ?>!</h2>
         <div class="notification-container">
             <i class="fa-solid fa-bell bell-icon" onclick="toggleNotifications()"></i>
             <?php if (!empty($notifications)): ?>

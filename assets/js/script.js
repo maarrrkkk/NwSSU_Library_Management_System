@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const form = e.target;
       const formData = new FormData(form);
 
-      fetch("includes/process-add-borrower.php", {
+      fetch("./../includes/process-add-borrower.php", {
         method: "POST",
         body: formData,
       })
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.set("borrower_id", borrowerId);
       }
 
-      fetch("includes/process-add-book.php", {
+      fetch("./../includes/process-add-book.php", {
         method: "POST",
         body: formData,
       })
@@ -153,13 +153,32 @@ document.addEventListener("DOMContentLoaded", function () {
       toast.classList.add("hidden");
     }, 4000);
   }
+  
+    // INFO CARD: Show Email or Phone
+  window.showInfoCard = function(type, borrowerId) {
+    fetch(`get_borrower_info.php?id=${borrowerId}`)
+      .then(response => response.json())
+      .then(data => {
+        const title = type === 'message' ? 'Phone Number' : 'Email Address';
+        const detail = type === 'message' ? data.phone : data.email;
+
+        document.getElementById('infoCardTitle').textContent = title;
+        document.getElementById('infoCardDetails').textContent = detail;
+        document.getElementById('infoCard').classList.remove('hidden');
+      })
+      .catch(error => console.error('Error fetching info:', error));
+  };
+
+  window.closeInfoCard = function() {
+    document.getElementById('infoCard').classList.add('hidden');
+  };
 
   // DELETE Borrower
   window.deleteBorrower = function (event, name) {
     event.preventDefault();
 
     if (confirm("Are you sure you want to delete this borrower?")) {
-      fetch("includes/delete_borrower.php", {
+      fetch("../includes/delete_borrower.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

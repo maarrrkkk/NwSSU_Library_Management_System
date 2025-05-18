@@ -2,7 +2,7 @@
   <div class="modal">
     <h2>Add Borrower</h2>
   
-    <form class="modal-form" id="borrowerForm" method="POST" action="includes/process-add-borrower.php">
+    <form class="modal-form" id="borrowerForm" method="POST" action="./../includes/process-add-borrower.php">
       <label>Name:</label>
       <input type="text" name="name" required>
 

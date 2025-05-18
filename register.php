@@ -1,3 +1,6 @@
+<?php
+include 'components/login&register_header.php';
+?>
 <link rel="stylesheet" href="assets/css/login_and_register.css">
 <div class="register-container">
     <h2>Create Account</h2>
