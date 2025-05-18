@@ -14,15 +14,16 @@ body {
 }
 
 /*=======================================Login and Registration style===================================================*/
-.error-input {
-  border: 2px solid red;
-}
 
 .error-message {
   color: red;
   font-size: 0.9em;
   margin-top: 5px;
   text-align: center;
+}
+
+.input-error {
+  border: 2px solid red;
 }
 
 

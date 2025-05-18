@@ -15,7 +15,7 @@ body {
 }
 
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 ul,
@@ -59,6 +59,16 @@ a {
   color: #3498db;
 }
 
+.nav-list a.active {
+  color: #3498db;
+  border-bottom: 2px solid #3498db;
+  font-weight: bold;
+}
+
+.nav-list a.active i {
+  color: #3498db;
+}
+
 
 
 
@@ -83,34 +93,43 @@ a {
   flex-direction: row;
   align-items: center;
   white-space: nowrap;
+  gap: 1rem;
 }
 
 #searchBox {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#searchBookBox {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .title-searc-box {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .title-searc-box h2,
 .title-searc-box input {
-    flex: 1 1 50%;
+  flex: 1 1 50%;
 }
 
 .title-searc-box input {
-    padding: 8px 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .lists-of-borrower {
@@ -120,6 +139,47 @@ a {
   border-radius: 10px;
   transition: flex 0.5s ease;
   border: 1px solid #ccc;
+}
+
+.lists-of-books {
+  flex: 1 1 100%;
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+  transition: flex 0.5s ease;
+  border: 1px solid #ccc;
+}
+
+.scrollable-book-list {
+  max-height: 80%;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.scrollable-borrower-list {
+    max-height: 80%;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.scrollable-book-list ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.scrollable-borrower-list ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+
+.book-meta-flex {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .lists-of-borrower ul {
@@ -218,6 +278,7 @@ a {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .title-indicator {
@@ -265,25 +326,28 @@ a {
   .details-container {
     height: 100%;
 
-}
+  }
 
   .lists-of-borrower.shrink {
     flex: 1 1 100%;
   }
 }
 
-  @media (max-width: 599px) {
+@media (max-width: 599px) {
 
-    .home-section {
-       padding: 35px 0px 0px 0px !important;
-    }
-
-    .title-searc-box {
-      flex-direction: column !important;
-      margin: 4rem 0rem 4rem 0rem;
-      gap: 3rem;
-    }
-
-
-
+  .home-section {
+    padding: 35px 0px 0px 0px !important;
   }
+
+  .lists-of-borrower, .borrower-details.visible {
+    border-radius: 0 !important;
+  }
+  .title-searc-box {
+    flex-direction: column !important;
+    margin: 4rem 0rem 4rem 0rem;
+    gap: 3rem;
+  }
+
+
+
+}

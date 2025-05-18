@@ -26,16 +26,18 @@ while ($book = $borrowedBooksResult->fetch_assoc()) {
                 </div>
                 <input type="text" id="searchBox" placeholder="Search borrower..." onkeyup="filterBorrowers()" />
             </div>
-            <ul id="borrowerUl">
-                <h2 style="margin-bottom: 1rem;">Borrower List</h2>
-                <?php
-                $counter = 1;
-                while ($borrower = $borrowersResult->fetch_assoc()): ?>
-                    <li onclick='showDetails(<?= json_encode($borrower) ?>, <?= json_encode($borrowedBooksByBorrower[$borrower["id"]] ?? []) ?>)'>
-                        <?= $counter++ . ". " . htmlspecialchars($borrower['name']) ?>
-                    </li>
-                <?php endwhile; ?>
-            </ul>
+            <h2 style="margin-bottom: 1rem;">Borrower List</h2>
+            <div class="scrollable-borrower-list">
+                <ul id="borrowerUl">
+                    <?php
+                    $counter = 1;
+                    while ($borrower = $borrowersResult->fetch_assoc()): ?>
+                        <li onclick='showDetails(<?= json_encode($borrower) ?>, <?= json_encode($borrowedBooksByBorrower[$borrower["id"]] ?? []) ?>)'>
+                            <?= $counter++ . ". " . htmlspecialchars($borrower['name']) ?>
+                        </li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
         </div>
         <div class="borrower-details" id="borrowerDetails"></div>
     </div>
@@ -44,13 +46,13 @@ while ($book = $borrowedBooksResult->fetch_assoc()) {
 <?php include 'components/footer.php'; ?>
 
 <script>
-function showDetails(borrower, books) {
-    const details = document.getElementById('borrowerDetails');
-    const borrowerList = document.getElementById('borrowerList');
+    function showDetails(borrower, books) {
+        const details = document.getElementById('borrowerDetails');
+        const borrowerList = document.getElementById('borrowerList');
 
-    const today = new Date().toISOString().split('T')[0];
+        const today = new Date().toISOString().split('T')[0];
 
-    let booksHTML = '';
+        let booksHTML = '';
         books.forEach(book => {
             const overdue = book.return_date < today ? '<span class="book-overdue">Overdue</span>' : '';
             booksHTML += `
@@ -72,7 +74,7 @@ function showDetails(borrower, books) {
             `;
         });
 
-    details.innerHTML = `
+        details.innerHTML = `
         <div class="details-container">
             <div class="navigation-back">
                 <a href="#" onclick="hideDetails()" class="back-button">✖</a>
@@ -88,30 +90,30 @@ function showDetails(borrower, books) {
         </div>
     `;
 
-    details.classList.add('visible');
-    borrowerList.classList.add('shrink');
-}
-
-function hideDetails() {
-    document.getElementById('borrowerDetails').classList.remove('visible');
-    document.getElementById('borrowerList').classList.remove('shrink');
-}
-
-function filterBorrowers() {
-    const input = document.getElementById('searchBox');
-    const filter = input.value.toLowerCase();
-    const ul = document.getElementById('borrowerUl');
-    const li = ul.getElementsByTagName('li');
-
-    for (let i = 0; i < li.length; i++) {
-        const txtValue = li[i].textContent || li[i].innerText;
-        li[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+        details.classList.add('visible');
+        borrowerList.classList.add('shrink');
     }
-}
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
-        hideDetails();
+    function hideDetails() {
+        document.getElementById('borrowerDetails').classList.remove('visible');
+        document.getElementById('borrowerList').classList.remove('shrink');
     }
-});
+
+    function filterBorrowers() {
+        const input = document.getElementById('searchBox');
+        const filter = input.value.toLowerCase();
+        const ul = document.getElementById('borrowerUl');
+        const li = ul.getElementsByTagName('li');
+
+        for (let i = 0; i < li.length; i++) {
+            const txtValue = li[i].textContent || li[i].innerText;
+            li[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            hideDetails();
+        }
+    });
 </script>

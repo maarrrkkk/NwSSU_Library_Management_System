@@ -13,14 +13,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $university_id = $_POST["university_id"];
     $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
 
-    $stmt = $conn->prepare("INSERT INTO users (first_name, middle_name, surname, full_name, age, position, email, phone, university_id, password)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssisssss", $first_name, $middle_name, $surname, $full_name, $age, $position, $email, $phone, $university_id, $password);
+    // Check for duplicate credentials
+    $check = $conn->prepare("SELECT * FROM users WHERE email = ? OR phone = ? OR university_id = ?");
+    $check->bind_param("sss", $email, $phone, $university_id);
+    $check->execute();
+    $result = $check->get_result();
 
-    if ($stmt->execute()) {
-        echo "Registration successful.";
+    if ($result->num_rows > 0) {
+        header("Location: ../register.php?error=exists");
+        exit();
     } else {
-        echo "Error: " . $stmt->error;
+        $stmt = $conn->prepare("INSERT INTO users (first_name, middle_name, surname, full_name, age, position, email, phone, university_id, password)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssisssss", $first_name, $middle_name, $surname, $full_name, $age, $position, $email, $phone, $university_id, $password);
+
+        if ($stmt->execute()) {
+            header("Location: ../login.php?registered=success");
+        } else {
+            header("Location: ../register.php?error=server");
+        }
     }
+
+    $check->close();
+    $stmt->close();
+    $conn->close();
 }
 ?>
