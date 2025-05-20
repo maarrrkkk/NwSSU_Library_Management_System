@@ -5,7 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name       = trim($_POST['name']);
     $age        = $_POST['age'];
     $status     = $_POST['status'];
-    $student_id = $_POST['student_id'];
+    $student_id = isset($_POST['student_id']) ? trim($_POST['student_id']) : null;
+    $teacher_id = isset($_POST['teacher_id']) ? trim($_POST['teacher_id']) : null;
     $email      = $_POST['email'];
     $phone      = $_POST['phone'];
 
@@ -22,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Proceed to insert
-    $insertQuery = "INSERT INTO borrowers (name, age, status, student_id, email, phone, number_of_books) 
-                    VALUES (?, ?, ?, ?, ?, ?, 0)";
+    $insertQuery = "INSERT INTO borrowers (name, age, status, student_id, teacher_id, email, phone, number_of_books) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
     $stmt = $conn->prepare($insertQuery);
-    $stmt->bind_param("sissss", $name, $age, $status, $student_id, $email, $phone);
+    $stmt->bind_param("sisssss", $name, $age, $status, $student_id, $teacher_id, $email, $phone);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "✅ Borrower added successfully"]);
